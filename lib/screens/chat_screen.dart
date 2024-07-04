@@ -79,13 +79,35 @@ class ChatScreenState extends State<ChatScreen> {
         ));
   }
 
+  // envio de texto ou imagem -> só permitir caso usuário esteja autenticado
   void _sendMessage({String? text, XFile? imgFile}) async {
     final CollectionReference _mensagens =
         FirebaseFirestore.instance.collection("mensagens");
+
+    // informações do usuário logado
+    String id = '';
+    User? user = await _getUser(context: context);
+
+    // caso usuário não efetue o login, exibe mensagem e não permite continuar (return)
+    if (user == null) {
+      const snackbar = SnackBar(
+          content: Text('Não foi possível fazer login!'),
+          backgroundColor: Colors.red);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      return;
+    }
+
+    // dados da mensagem
     Map<String, dynamic> data = {
       'time': Timestamp.now(),
       'url': '',
+      'text': '',
+      'uid': user?.uid, // identificador do usuário
+      'senderName': user?.displayName, // nome do usuário que envia a mensagem
+      'senderPhotoUrl': user?.photoURL // foto do usuário que envia a mensagem
     };
+
+    if (user != null) id = user.uid;
 
     if (imgFile != null) {
       // chegou um arquivo de imagem
