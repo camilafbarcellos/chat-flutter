@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chat/screens/text_message.dart';
 import '/screens/text_composer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -48,27 +49,8 @@ class ChatScreenState extends State<ChatScreen> {
                       itemCount: documents.length,
                       reverse: true,
                       itemBuilder: (context, index) {
-                        return Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                  child: Column(
-                                children: <Widget>[
-                                  documents[index].get('url') != ""
-                                      ? Image.network(
-                                          documents[index].get('url'),
-                                          width: 150)
-                                      : Text(
-                                          documents[index].get('text'),
-                                          style: TextStyle(fontSize: 16),
-                                        )
-                                ],
-                              ))
-                            ],
-                          ),
-                        );
+                        return TextMessage(documents[index],
+                            documents[index].get('uid') == _currentUser?.uid);
                       },
                     );
                 }
