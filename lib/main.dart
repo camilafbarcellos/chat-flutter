@@ -1,4 +1,5 @@
 import 'package:chat/screens/chat_screen.dart';
+import 'package:chat/screens/mapa.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
@@ -40,7 +41,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: ChatScreen(),
+      home: MapSample(),
+      //ChatScreen(),
     );
   }
 }
