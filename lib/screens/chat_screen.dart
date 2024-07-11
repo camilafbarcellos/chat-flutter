@@ -26,11 +26,27 @@ class ChatScreenState extends State<ChatScreen> {
   FirebaseAuth auth = FirebaseAuth.instance;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  // controle do componente de carregamento
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Chat App"),
+          title: Text(_currentUser != null
+              ? 'Olá, ${_currentUser?.displayName}'
+              : 'Chat App'),
+          actions: <Widget>[
+            _currentUser != null
+                ? IconButton(
+                    onPressed: () {
+                      FirebaseAuth.instance.signOut();
+                      const snackBar = SnackBar(
+                          content: Text('Logout'), backgroundColor: Colors.red);
+                    },
+                    icon: Icon(Icons.exit_to_app))
+                : Container()
+          ],
           backgroundColor: Colors.cyan,
         ),
         body: Column(
@@ -56,6 +72,7 @@ class ChatScreenState extends State<ChatScreen> {
                 }
               },
             )),
+            _isLoading ? LinearProgressIndicator() : Container(),
             TextComposer(_sendMessage),
           ],
         ));
@@ -79,6 +96,11 @@ class ChatScreenState extends State<ChatScreen> {
       return;
     }
 
+    // INÍCIO DO CARREGAMENTO DA MENSAGEM ENVIADA -> adicionar loading
+    setState(() {
+      _isLoading = true;
+    });
+
     // dados da mensagem
     Map<String, dynamic> data = {
       'time': Timestamp.now(),
@@ -97,7 +119,7 @@ class ChatScreenState extends State<ChatScreen> {
       firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
           .ref()
           .child("imgs")
-          .child(DateTime.now().millisecondsSinceEpoch.toString());
+          .child(id + DateTime.now().millisecondsSinceEpoch.toString());
       final metadados = firebase_storage.SettableMetadata(
           contentType: "image/jpeg",
           customMetadata: {"picked-file-path": imgFile.path});
@@ -118,6 +140,11 @@ class ChatScreenState extends State<ChatScreen> {
       data['text'] = text;
     }
     _mensagens.add(data);
+
+    // FIM DO CARREGAMENTO DA MENSAGEM ENVIADA -> tirar loading
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   // métodos referentes ao login
