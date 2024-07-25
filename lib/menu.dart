@@ -1,6 +1,5 @@
-import 'package:chat/screens/map_geo.dart';
+import 'package:chat/screens/lista.dart';
 import 'package:flutter/material.dart';
-//import 'screens/lista.dart';
 import 'screens/chat_screen.dart';
 
 class NavigationOptions extends StatefulWidget {
@@ -33,7 +32,7 @@ class _NavigationOptionsState extends State<NavigationOptions> {
         controller: pc,
         children: [
           ChatScreen(),
-          MapSample(),
+          Lista(),
         ],
         onPageChanged: setPaginaAtual,
       ),
