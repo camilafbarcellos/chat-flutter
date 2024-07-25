@@ -1,3 +1,4 @@
+import 'package:chat/menu.dart';
 import 'package:chat/screens/chat_screen.dart';
 import 'package:chat/screens/map_geo.dart';
 import 'package:flutter/material.dart';
@@ -41,8 +42,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MapSample(),
-      //ChatScreen(),
+      home: NavigationOptions(),
     );
   }
 }
