@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -34,6 +35,10 @@ class MapSampleState extends State<MapSample> {
 
   // captura localização atual do usuário
   getLocation() async {
+    // testar login de usuário
+    print('TESTE USER');
+    User? user = await FirebaseAuth.instance.currentUser!;
+    if (user != null) print(user!.displayName);
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       await Geolocator.requestPermission();
